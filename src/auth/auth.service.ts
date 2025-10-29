@@ -1,6 +1,7 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -16,12 +17,14 @@ export class AuthService {
 
         if (!user) {
             this.logger.log(`User with email ${email} not found`);
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('Invalid credentials');
         }
 
-        if (user?.pass !== pass) {
+        const isPasswordValid = await bcrypt.compare(pass, user.pass);
+
+        if (!isPasswordValid) {
             this.logger.log(`Invalid password for user with email ${email}`);
-            throw new UnauthorizedException();
+            throw new UnauthorizedException('Invalid credentials');
         }
 
         const payload = { id: user.id, email: user.email };
