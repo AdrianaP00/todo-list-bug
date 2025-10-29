@@ -1,33 +1,40 @@
-# Mejoras de Seguridad JWT - Resumen de Implementación
+# JWT Security Improvements - Implementation Summary
 
-## Problema Identificado
-La autenticación mediante JWT funcionaba pero tenía vulnerabilidades de seguridad importantes que permitían ataques potenciales.
+> **📚 Navigation**: [← Back to Documentation Index](../README.md) | [← Security Implementation](./SECURITY_IMPLEMENTATION.md) | [Error Handling →](./ERROR_HANDLING_IMPROVEMENTS.md)
+
+## Problem Identified
+JWT authentication was functional but had significant security vulnerabilities that allowed potential attacks.
+
+## Related Documentation
+- **[Security Implementation](./SECURITY_IMPLEMENTATION.md)** - Core security architecture
+- **[Error Handling Improvements](./ERROR_HANDLING_IMPROVEMENTS.md)** - Exception handling system
+- **[Comprehensive Security Report](../reports/COMPREHENSIVE_SECURITY_REPORT.md)** - Full security analysis
 
 ## Mejoras Implementadas
 
-### 1. Validación Robusta del Token Bearer
-- **Antes**: Validación básica que no verificaba el formato correcto
-- **Después**: Validación estricta del header `Authorization: Bearer <token>`
-- **Beneficio**: Previene ataques con tokens malformados
+### 1. Robust Bearer Token Validation
+- **Before**: Basic validation that didn't verify correct format
+- **After**: Strict validation of `Authorization: Bearer <token>` header
+- **Benefit**: Prevents attacks with malformed tokens
 
-### 2. Validación Completa del Payload JWT
-- **Implementado**: Verificación de estructura del payload (id, email, iat, exp)
-- **Implementado**: Validación de tipos de datos y formato de email
-- **Beneficio**: Previene ataques con payloads manipulados
+### 2. Complete JWT Payload Validation
+- **Implemented**: Payload structure verification (id, email, iat, exp)
+- **Implemented**: Data type validation and email format verification
+- **Benefit**: Prevents attacks with manipulated payloads
 
-### 3. Verificación de Usuario Activo
-- **Implementado**: Verificación en tiempo real de que el usuario del token existe en la BD
-- **Beneficio**: Tokens de usuarios eliminados son automáticamente invalidados
-- **Protege contra**: Tokens persistentes de cuentas desactivadas
+### 3. Active User Verification
+- **Implemented**: Real-time verification that the token user exists in DB
+- **Benefit**: Tokens from deleted users are automatically invalidated
+- **Protects against**: Persistent tokens from deactivated accounts
 
-### 4. Manejo Específico de Errores JWT
-- **Token Expirado**: Error específico con mensaje claro
-- **Token Inválido**: Diferenciación entre token malformado vs inválido
-- **Logging de Seguridad**: Registro detallado de intentos de acceso fallidos
-- **Beneficio**: Mejor debugging y monitoreo de seguridad
+### 4. Specific JWT Error Handling
+- **Expired Token**: Specific error with clear message
+- **Invalid Token**: Differentiation between malformed vs invalid token
+- **Security Logging**: Detailed logging of failed access attempts
+- **Benefit**: Better debugging and security monitoring
 
-### 5. Configuración de Seguridad JWT Mejorada
-- **Advertencia**: Alert cuando se usa secreto por defecto
+### 5. Enhanced JWT Security Configuration
+- **Warning**: Alert when using default secret
 - **Issuer/Audience**: Validación de emisor y audiencia del token
 - **Variables de Entorno**: Soporte para JWT_SECRET y JWT_EXPIRES_IN
 - **Beneficio**: Configuración más robusta y personalizable

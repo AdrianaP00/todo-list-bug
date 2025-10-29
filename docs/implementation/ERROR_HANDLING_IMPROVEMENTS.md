@@ -1,26 +1,33 @@
-# Mejoras en el Manejo de Errores - Sistema de Tareas
+# Error Handling Improvements - Task System
 
-## Resumen de Mejoras Implementadas
+> **📚 Navigation**: [← Back to Documentation Index](../README.md) | [← JWT Security](./JWT_SECURITY_IMPROVEMENTS.md) | [← Security Implementation](./SECURITY_IMPLEMENTATION.md)
 
-Este documento detalla las mejoras implementadas para asegurar un manejo adecuado de errores, especialmente para casos como acceso sin permisos (403 Forbidden) y otros casos extremos.
+## Summary of Implemented Improvements
+
+This document details the improvements implemented to ensure proper error handling, especially for cases like unauthorized access (403 Forbidden) and other edge cases.
+
+## Related Documentation
+- **[Security Implementation](./SECURITY_IMPLEMENTATION.md)** - Core security architecture
+- **[JWT Security Improvements](./JWT_SECURITY_IMPROVEMENTS.md)** - Authentication system
+- **[Comprehensive Security Report](../reports/COMPREHENSIVE_SECURITY_REPORT.md)** - Full security analysis
 
 ## 1. Filtro Global de Excepciones
 
 **Archivo:** `src/common/filters/global-exception.filter.ts`
 
-### Características:
-- **Manejo unificado de errores**: Todos los errores pasan por un punto central
-- **Categorización de errores**: Distingue entre errores HTTP, de base de datos y no esperados
-- **Logging inteligente**: 
-  - Errores 5xx se registran como errores
-  - Errores 403/401 se registran como advertencias
-  - Incluye contexto del usuario y request
-- **Errores de base de datos específicos**:
+### Features:
+- **Unified error handling**: All errors pass through a central point
+- **Error categorization**: Distinguishes between HTTP, database, and unexpected errors
+- **Intelligent logging**: 
+  - 5xx errors logged as errors
+  - 403/401 errors logged as warnings
+  - Includes user and request context
+- **Specific database errors**:
   - Constraint violations (23505, 23503)
   - Data truncation (22001)
-  - Mensajes de error user-friendly
+  - User-friendly error messages
 
-### Respuesta de error estandarizada:
+### Standardized error response:
 ```json
 {
   "statusCode": 403,

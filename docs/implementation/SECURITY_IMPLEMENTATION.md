@@ -1,7 +1,15 @@
 # Task Editing Security Implementation
 
+> **📚 Navigation**: [← Back to Documentation Index](../README.md) | [JWT Security →](./JWT_SECURITY_IMPROVEMENTS.md) | [Error Handling →](./ERROR_HANDLING_IMPROVEMENTS.md)
+
 ## Summary
 The task editing functionality has been properly secured to ensure that **only task owners can edit their own tasks**. Any attempt to edit a task that belongs to another user will result in a `ForbiddenException`.
+
+## Related Documentation
+- **[JWT Security Improvements](./JWT_SECURITY_IMPROVEMENTS.md)** - Authentication layer details
+- **[Error Handling Improvements](./ERROR_HANDLING_IMPROVEMENTS.md)** - Exception handling system
+- **[Comprehensive Security Report](../reports/COMPREHENSIVE_SECURITY_REPORT.md)** - Full security analysis
+- **[Testing Report](../testing/FINAL_TESTING_SECURITY_REPORT.md)** - Test coverage details
 
 ## Security Architecture
 
