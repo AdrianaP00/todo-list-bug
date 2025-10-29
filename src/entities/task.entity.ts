@@ -4,20 +4,20 @@ import { User } from './user.entity';
 @Entity('tasks')
 export class Task {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id!: string;
 
     @Column()
-    title: string;
+    title!: string;
 
     @Column()
-    description: string;
+    description!: string;
 
     @Column()
-    done: boolean;
+    done!: boolean;
 
     @Column()
-    dueDate: string;
+    dueDate!: string;
 
     @ManyToOne(() => User, (user) => user.tasks)
-    owner: User;
+    owner!: User;
 }

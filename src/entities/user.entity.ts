@@ -4,18 +4,17 @@ import { Task } from './task.entity';
 @Entity('users')
 export class User {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id!: string;
 
     @Column()
-    fullname: string;
+    fullname!: string;
+
+    @Column({ unique: true })
+    email!: string;
 
     @Column()
-    email: string;
-
-    // Por motivos de simplicidad, vamos a guardar la contraseña en texto plano
-    @Column()
-    pass: string;
+    pass!: string;
 
     @OneToMany(() => Task, (task) => task.owner)
-    tasks: Task[];
+    tasks!: Task[];
 }

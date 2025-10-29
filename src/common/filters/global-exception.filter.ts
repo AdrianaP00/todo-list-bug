@@ -25,7 +25,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         if (exception instanceof HttpException) {
             status = exception.getStatus();
             const errorResponse = exception.getResponse();
-            
+
             if (typeof errorResponse === 'string') {
                 message = errorResponse;
                 error = exception.name;
@@ -43,7 +43,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         } else if (exception instanceof QueryFailedError) {
             // Handle database-related errors
             status = HttpStatus.BAD_REQUEST;
-            
+
             // Check for specific database errors
             const dbError = exception as any;
             if (dbError.code === '23505') {
@@ -62,7 +62,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
                 message = 'Database operation failed';
                 error = 'Database Error';
             }
-            
+
             this.logger.error('Database error:', {
                 code: dbError.code,
                 message: dbError.message,
@@ -74,7 +74,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             message = 'Internal server error';
             error = 'Internal Server Error';
-            
+
             this.logger.error('Unexpected error:', {
                 error: exception,
                 stack: exception instanceof Error ? exception.stack : undefined,

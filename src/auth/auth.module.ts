@@ -12,7 +12,7 @@ import { AuthGuard } from './auth.guard';
             global: true,
             secret: jwtConstants.secret,
             signOptions: {
-                expiresIn: process.env.JWT_EXPIRES_IN || '1h',
+                expiresIn: process.env['JWT_EXPIRES_IN'] || '1h',
                 issuer: 'todo-app',
                 audience: 'todo-app-users',
             },

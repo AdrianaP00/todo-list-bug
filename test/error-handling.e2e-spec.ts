@@ -14,7 +14,7 @@ describe('Error Handling (e2e)', () => {
         }).compile();
 
         app = moduleFixture.createNestApplication();
-        
+
         app.useGlobalPipes(
             new ValidationPipe({
                 whitelist: true,
@@ -25,9 +25,9 @@ describe('Error Handling (e2e)', () => {
                 stopAtFirstError: false,
             }),
         );
-        
+
         app.useGlobalFilters(new GlobalExceptionFilter());
-        
+
         await app.init();
     });
 

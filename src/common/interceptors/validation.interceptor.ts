@@ -12,13 +12,13 @@ import { isUuid } from '../utils/uuid.util';
 export class ValidationInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const request = context.switchToHttp().getRequest();
-        
+
         // Validate UUID parameters
         this.validateUuidParams(request.params);
-        
+
         // Validate request body size and structure
         this.validateRequestBody(request.body);
-        
+
         return next.handle().pipe(
             catchError((error) => {
                 // Add additional context to errors
@@ -31,7 +31,7 @@ export class ValidationInterceptor implements NestInterceptor {
                         () => new BadRequestException('Invalid task ID format'),
                     );
                 }
-                
+
                 return throwError(() => error);
             }),
         );
@@ -88,7 +88,7 @@ export class ValidationInterceptor implements NestInterceptor {
         ];
 
         const jsonStr = JSON.stringify(body);
-        
+
         for (const pattern of maliciousPatterns) {
             if (pattern.test(jsonStr)) {
                 throw new BadRequestException(

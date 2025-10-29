@@ -13,7 +13,7 @@ export class CreateTaskDto {
     @IsNotEmpty({ message: 'Title cannot be empty' })
     @MinLength(1, { message: 'Title must be at least 1 character long' })
     @MaxLength(255, { message: 'Title cannot exceed 255 characters' })
-    title: string;
+    title!: string;
 
     @IsOptional()
     @IsString({ message: 'Description must be a string' })

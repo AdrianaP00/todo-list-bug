@@ -12,7 +12,7 @@ import {
 export class EditTaskDto {
     @IsUUID('4', { message: 'ID must be a valid UUID' })
     @IsNotEmpty({ message: 'Task ID cannot be empty' })
-    id: string;
+    id!: string;
 
     @IsOptional()
     @IsString({ message: 'Title must be a string' })
