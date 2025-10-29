@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { UnauthorizedException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 
 describe('AuthService', () => {
     let service: AuthService;
@@ -42,10 +43,11 @@ describe('AuthService', () => {
     });
 
     it('should throw UnauthorizedException if password is incorrect', async () => {
+        const hashedWrongPassword = await bcrypt.hash('wrongpassword', 10);
         jest.spyOn(usersService, 'findOne').mockResolvedValue({
             id: '1',
             email: 'test@example.com',
-            pass: 'wrongpassword',
+            pass: hashedWrongPassword,
             fullname: 'Test User',
             tasks: [],
         });
@@ -56,10 +58,12 @@ describe('AuthService', () => {
     });
 
     it('should return access token if credentials are valid', async () => {
+        const password = 'password';
+        const hashedPassword = await bcrypt.hash(password, 10);
         const user = {
             id: '1',
             email: 'test@example.com',
-            pass: 'password',
+            pass: hashedPassword,
             fullname: 'Test User',
             tasks: [],
         };
@@ -68,8 +72,15 @@ describe('AuthService', () => {
         jest.spyOn(usersService, 'findOne').mockResolvedValue(user);
         jest.spyOn(jwtService, 'signAsync').mockResolvedValue(token);
 
-        const result = await service.signIn('test@example.com', 'password');
+        const result = await service.signIn('test@example.com', password);
 
-        expect(result).toEqual({ access_token: token });
+        expect(result).toEqual({
+            access_token: token,
+            user: {
+                id: user.id,
+                email: user.email,
+                fullname: user.fullname,
+            },
+        });
     });
 });
