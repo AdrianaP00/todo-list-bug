@@ -5,6 +5,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { UsersModule } from '../users/users.module';
 import { AuthGuard } from './auth.guard';
+import { LoginAttemptService } from '../common/services/login-attempt.service';
+import { ValidationService } from '../common/services/validation.service';
 
 @Module({
     imports: [
@@ -12,19 +14,19 @@ import { AuthGuard } from './auth.guard';
             global: true,
             secret: jwtConstants.secret,
             signOptions: {
-                expiresIn: process.env['JWT_EXPIRES_IN'] || '1h',
-                issuer: 'todo-app',
-                audience: 'todo-app-users',
+                expiresIn: jwtConstants.expiresIn,
+                issuer: jwtConstants.issuer,
+                audience: jwtConstants.audience,
             },
             verifyOptions: {
-                issuer: 'todo-app',
-                audience: 'todo-app-users',
+                issuer: jwtConstants.issuer,
+                audience: jwtConstants.audience,
             },
         }),
         UsersModule,
     ],
     controllers: [AuthController],
-    providers: [AuthService, AuthGuard],
-    exports: [AuthGuard],
+    providers: [AuthService, AuthGuard, LoginAttemptService, ValidationService],
+    exports: [AuthGuard, LoginAttemptService, ValidationService],
 })
 export class AuthModule {}

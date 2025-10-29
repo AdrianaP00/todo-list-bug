@@ -10,6 +10,8 @@ import path from 'node:path';
 import { SecurityLoggingService } from './common/services/security-logging.service';
 import { DataIntegrityService } from './common/services/data-integrity.service';
 import { SecurityLoggingInterceptor } from './common/interceptors/security-logging.interceptor';
+import { RateLimitInterceptor } from './common/interceptors/rate-limit.interceptor';
+import { CorsInterceptor } from './common/interceptors/cors.interceptor';
 
 @Module({
     imports: [
@@ -31,6 +33,14 @@ import { SecurityLoggingInterceptor } from './common/interceptors/security-loggi
         {
             provide: APP_INTERCEPTOR,
             useClass: SecurityLoggingInterceptor,
+        },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: RateLimitInterceptor,
+        },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: CorsInterceptor,
         },
         SecurityLoggingService,
         DataIntegrityService,
