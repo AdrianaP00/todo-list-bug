@@ -32,7 +32,7 @@ export class UsersService {
         user.fullname = body.fullname;
 
         await this.usersRepository.save(user);
-        
+
         // Don't return the hashed password
         const { pass, ...userWithoutPassword } = user;
         return userWithoutPassword;

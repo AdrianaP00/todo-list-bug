@@ -31,7 +31,7 @@ export class TasksService {
 
     async getTask(id: string, userId: string) {
         this.logger.log(`Getting task ${id} for user: ${userId}`);
-        
+
         // Fixed SQL injection vulnerability by using parameterized query
         const task = await this.tasksRepository
             .createQueryBuilder('task')
@@ -59,7 +59,7 @@ export class TasksService {
 
     async createTask(body: CreateTaskDto, userId: string) {
         this.logger.log(`Creating task for user: ${userId}`);
-        
+
         const task = new Task();
         task.title = body.title;
         task.description = body.description || '';
@@ -75,10 +75,10 @@ export class TasksService {
 
     async editTask(body: EditTaskDto, userId: string) {
         this.logger.log(`Editing task ${body.id} for user: ${userId}`);
-        
+
         // First verify the task exists and belongs to the user
         await this.getTask(body.id, userId);
-        
+
         // Update only allowed fields to prevent mass assignment
         const updateData: Partial<Task> = {};
         if (body.title !== undefined) updateData.title = body.title;
@@ -97,10 +97,10 @@ export class TasksService {
 
     async deleteTask(id: string, userId: string) {
         this.logger.log(`Deleting task ${id} for user: ${userId}`);
-        
+
         // First verify the task exists and belongs to the user
         const task = await this.getTask(id, userId);
-        
+
         await this.tasksRepository.remove(task);
         this.logger.log(`Successfully deleted task ${id}`);
 
