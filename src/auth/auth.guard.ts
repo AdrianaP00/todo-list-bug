@@ -3,6 +3,7 @@ import {
     ExecutionContext,
     Injectable,
     UnauthorizedException,
+    ForbiddenException,
     Logger,
 } from '@nestjs/common';
 import { jwtConstants } from './constants';
@@ -58,7 +59,17 @@ export class AuthGuard implements CanActivate {
             const user = await this.usersService.findOne(payload.email);
             if (!user) {
                 this.logger.warn(`User not found for token: ${payload.email}`);
-                throw new UnauthorizedException('User not found');
+                throw new ForbiddenException(
+                    'User account no longer exists or has been deactivated',
+                );
+            }
+
+            // Additional security check: verify user ID matches
+            if (user.id !== String(payload.id)) {
+                this.logger.warn(
+                    `User ID mismatch - Token: ${payload.id}, DB: ${user.id}`,
+                );
+                throw new ForbiddenException('Invalid user credentials');
             }
 
             // Assign user data to request
@@ -75,8 +86,11 @@ export class AuthGuard implements CanActivate {
             } else if (error instanceof JsonWebTokenError) {
                 this.logger.warn('Invalid JWT token', error.message);
                 throw new UnauthorizedException('Invalid token');
-            } else if (error instanceof UnauthorizedException) {
-                // Re-throw our custom UnauthorizedException
+            } else if (
+                error instanceof UnauthorizedException ||
+                error instanceof ForbiddenException
+            ) {
+                // Re-throw our custom exceptions
                 throw error;
             } else {
                 this.logger.error(

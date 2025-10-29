@@ -3,6 +3,10 @@
 /node_modules
 /build
 
+# npm files (use yarn only)
+package-lock.json
+npm-shrinkwrap.json
+
 # Logs
 logs
 *.log
